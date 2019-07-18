@@ -1,12 +1,15 @@
 <DOCTYPE html>
   <html>
   <head>
-      <title>Simple Upload Example</title>
+      <title>Simple Upload Video</title>
   </head>
   <body>
   <form action="/" enctype="multipart/form-data" method="post">
-      <input type="file" name="upload" multiple>
-      <input type="submit" value="Upload">
+    <input type="text" name="numberOfSegment"> Number Of Segments </input>
+    <input type="text" name="rangeDuration"> Range Duration </input>
+    <input type="text" name="intervalDuration"> Interval Duration </input>
+      <input type="file" name="upload" multiple> Upload Video </input>
+      <button type="submit" value="Upload">Upload</button>
   </form>
   </body>
   </html>

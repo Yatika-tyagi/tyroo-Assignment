@@ -25,46 +25,45 @@ exports.uploadDoc = (req, res) => {
     var file = req.files;
     // console.log(file, "FILE");
     // console.log("***", getVideoDurationInSeconds('src/assests/SampleVideo_1280x720_5mb.mp4'))
-  getVideoDurationInSeconds('src/assests/SampleVideo_1280x720_5mb.mp4')
+  getVideoDurationInSeconds('src/assests/SampleVideo_1280x720_30mb.mp4')
    //.then((duration) => {
     // console.log(__dirname);
     // return duration;
    //})
   .then((duration) => {
-    console.log(__dirname, 'wertyuiuytrew');
-
-    console.log("Dur", duration);
-    res.end();
-
-    videoCut({
-      silent: false // optional. if set to false, gives detailed output on console
-    })
-    .original({
-      "fileName": 'src/assests/SampleVideo_1280x720_5mb.mp4',
-      "duration": '00:00:29',
-    })
-    .exclude([
+    var dataArray = [
       {
-        "startTime": "00:00:01",
-        "duration": "00:00:10"
+        start: '00:00:03',
+        end: '00:00:10',
+        name: '1'
       },
       {
-        "startTime": "00:00:11",
-        "duration": "00:00:20"
+        start: '00:00:13',
+        end: '00:00:10',
+        name: '2'
       },
       {
-        "startTime": "00:00:21",
-        "duration": "00:00:28"
-      }
-    ])
-    .cut()
-    .then((videoClips) => {
-      console.log(videoClips, 'wertyuioiuytre');
-      res.end();
-      // [{startTime, duration, fileName}]
-    }).catch(a => console.log(a));
+        start: '00:00:23',
+        end: '00:00:10',
+        name: '3'
+      },
+
+    ];
+
+    const exec = require("child_process").exec;
+    let comm = 'ffmpeg -i src/assests/SampleVideo_1280x720_30mb.mp4 -ss {start} -t {till} -strict experimental  src/assests/{name}.mp4';
+
+    for (let index = 0; index < dataArray.length; index++) {
+      var comm1 = comm.replace('{start}', dataArray[index].start).replace('{till}',dataArray[index].end).replace('{name}', dataArray[index].name);
+        exec(comm1, (error, stdout, stderr) => {
+        //do whatever here
+        console.log(error, stdout, stderr);
+        })     
+      
+    }
+    
   })
-  // res.end();
+  res.end();
     // console.log(req.files);
   });
 };
@@ -75,6 +74,18 @@ const videoIntervalDuration = () => {
  
 const getDurattion = () => {
 
+}
+
+const  toHHMMSS = (secs) => {
+  var sec_num = parseInt(secs, 10)
+  var hours   = Math.floor(sec_num / 3600)
+  var minutes = Math.floor(sec_num / 60) % 60
+  var seconds = sec_num % 60
+
+  return [hours,minutes,seconds]
+      .map(v => v < 10 ? "0" + v : v)
+      .filter((v,i) => v !== "00" || i > 0)
+      .join(":")
 }
  
 
