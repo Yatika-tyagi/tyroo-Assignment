@@ -11,7 +11,7 @@ app.get('/', function (req, res){
    });
 });
 
-app.post('/', function (req, res){
+app.get('/index', function (req, res){
 
    // form.parse(req, function(a,b,c){console.log(a,b,c)});
 
